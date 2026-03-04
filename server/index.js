@@ -9,6 +9,9 @@ const app = express();
 // Connect DB
 connectDb();
 
+// Middleware for CORS
+app.use(cors());
+
 // JSON parser
 app.use(express.json());
 
