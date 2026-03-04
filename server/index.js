@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 
 import connectDb from "./config/connectionDb.js";
+import routes from "./routes.js";
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use(express.json());
 
 // Body parser
 app.use(express.urlencoded({ extended: false }));
+
+// API Routes
+app.use(routes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
