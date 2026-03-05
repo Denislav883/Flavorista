@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 
 const userSchema = new Schema({
+    username: {
+        type: String,
+        required: [true, "Email should be unique!"],
+        unique: [true, "Email should be unique!"]
+    },
     email: {
         type: String,
         required: [true, "User email is required!"],
@@ -22,4 +27,4 @@ userSchema.pre("save", async function() {
 
 const User = model("User", userSchema);
 
-export default User;    
+export default User;
