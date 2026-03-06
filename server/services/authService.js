@@ -1,12 +1,20 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 import User from "../models/User.js";
+import { generateAuthToken } from "../utils/tokenUtils.js";
 
 export default {
-    register(userData) {
-        return User.create(userData);
+    async register({ username, email, password }) {
+        const user = await User.create({ username, email, password });
+
+        const token = generateAuthToken(user);
+
+        return {
+            _id: user.id,
+            email:user.email,
+            accessToken:token
+        };
     },
     async login({ email, password }) {
         const user = await User.findOne({ email });
@@ -21,17 +29,12 @@ export default {
             throw new Error("Invalid email or password");
         }
 
-        const payload = {
-            id: user.id,
-            emial: user.email
-        }
-
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "12h" });
+        const token = generateAuthToken(user);
 
         return {
             _id: user.id,
             email: user.email,
             accessToken: token
-        }
+        };
     }
 }

@@ -1,7 +1,9 @@
 export function getErrorMessage(err) {
     switch(err.name) {
-        case "ValidationError": 
-            return Object.values(err.errors).at(0).message;
+        case "ValidationError": {
+            const errors = Object.values(err.errors);
+            return errors.length ? errors[0].message : err.message;
+        }
         default:
             return err.message;
     }

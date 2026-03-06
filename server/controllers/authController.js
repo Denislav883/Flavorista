@@ -1,13 +1,12 @@
 import { Router } from "express";
 
-import userService from "../services/userService.js";
-import User from "../models/User.js";
+import authService from "../services/authService.js";
 import { getErrorMessage } from "../utils/errorUtils.js";
 
 const authController = Router();
 
 authController.post("/register", async (req, res) => {
-    const userData = req.body;
+    const { username, email, password } = req.body;
 
     try {
 
@@ -15,39 +14,33 @@ authController.post("/register", async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const isUser = User.findOne({ email });
-
-        if (isUser) {
-            return res.status(400).json({ message: "This user is already exists" });
-        }
-
-        const user = await userService.register(userData);
+        const user = await authService.register({ username, email, password });
 
         if (user) {
-            return res.status(201).json({
-                message: "User registered successfully"
-            });
+            return res.status(201).json(user);
         }
 
-        res.status(400).json({ message: "Invalid user data" });
+        return res.status(400).json({ message: "Invalid user data" });
     } catch (err) {
         const errorMessage = getErrorMessage(err);
 
-        res.status(400).json({ error: errorMessage });
+        return res.status(400).json({ error: errorMessage });
     }
-
-    await userService.register(userData);
 })
 
 authController.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    try {
-        const result = await userService.login(email, password);
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+    }
 
-        res.status(201).json(result);
+    try {
+        const result = await authService.login({ email, password });
+
+        return res.status(200).json(result);
     } catch(err) {
-        res.status(401).json({ message: err.message });
+        return res.status(401).json({ message: err.message });
     }
 })
 
