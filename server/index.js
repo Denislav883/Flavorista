@@ -4,6 +4,7 @@ import cors from "cors";
 
 import connectDb from "./config/connectionDb.js";
 import routes from "./routes.js";
+import { authMiddleware } from "./middlewares/authMiddleware.js";
 
 const app = express();
 
@@ -16,8 +17,8 @@ app.use(cors());
 // JSON parser
 app.use(express.json());
 
-// Body parser
-app.use(express.urlencoded({ extended: false }));
+// Add auth middleware
+app.use(authMiddleware);
 
 // API Routes
 app.use(routes);
