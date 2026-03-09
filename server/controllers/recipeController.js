@@ -14,4 +14,20 @@ recipeController.get("/", async (req, res) => {
     }
 });
 
+recipeController.post("/", async (req, res) => {
+    try {
+        const recipeData = req.body;
+
+        if(!title || !ingredients || !instructions || !time || !image) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const recipe = await recipeService.createRecipe(recipeData);
+
+        res.status(201).json(recipe);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 export default recipeController;

@@ -4,4 +4,7 @@ export default {
     getAll() {
         return Recipe.find();
     },
+    createRecipe(recipeData) {
+        return Recipe.create(recipeData);
+    }
 }
