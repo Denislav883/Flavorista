@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
-const recipeSchema = new Schema ({
+const recipeSchema = new Schema({
     title: {
         type: String,
         required: true
@@ -20,6 +20,10 @@ const recipeSchema = new Schema ({
     image: {
         type: String,
         required: true
+    },
+    ownerId: {
+        type: Types.ObjectId,
+        ref: "User"
     }
 });
 

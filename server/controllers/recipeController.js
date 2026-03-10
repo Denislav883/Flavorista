@@ -6,25 +6,9 @@ const recipeController = Router();
 
 recipeController.get("/", async (req, res) => {
     try {
-        const furnitures = await recipeService.getAll();
+        const recipes = await recipeService.getAll();
 
-        res.status(200).json(furnitures || []);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-recipeController.post("/", async (req, res) => {
-    try {
-        const recipeData = req.body;
-
-        if (!title || !ingredients || !instructions || !time || !image) {
-            return res.status(400).json({ message: "All fields are required" });
-        }
-
-        const recipe = await recipeService.createRecipe(recipeData);
-
-        res.status(201).json(recipe);
+        res.status(200).json(recipes || []);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -41,7 +25,32 @@ recipeController.get("/:id", async (req, res) => {
             return res.status(404).json({ message: "Recipe not found" });
         }
 
-        res.status(200).json({recipe});
+        res.status(200).json({ recipe });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+recipeController.post("/", async (req, res) => {
+    try {
+        const { title, ingredients, instructions, time, image } = req.body;
+        const ownerId = req.user.id;
+
+        if (!title || !ingredients || !instructions || !time || !image) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const recipeData = {
+            title,
+            ingredients,
+            instructions,
+            time,
+            image
+        };
+
+        const recipe = await recipeService.createRecipe(recipeData, ownerId);
+
+        res.status(201).json(recipe);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

@@ -1,4 +1,4 @@
-import Recipe from "../models/Recipe";
+import Recipe from "../models/Recipe.js";
 
 export default {
     getAll() {
@@ -7,7 +7,10 @@ export default {
     getOne(id) {
         return Recipe.findById(id);
     },
-    createRecipe(recipeData) {
-        return Recipe.create(recipeData);
+    createRecipe(recipeData, ownerId) {
+        return Recipe.create({
+            ...recipeData,
+            ownerId: ownerId
+        });
     }
 }
