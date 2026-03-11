@@ -64,9 +64,22 @@ recipeController.put("/:id", async (req, res) => {
         const updatedRecipe = await recipeService.updateRecipe(id, recipeData);
 
         res.status(200).json(updatedRecipe);
-    } catch(err) {
+    } catch (err) {
         res.status(500).json({ message: err.message });
     }
+});
+
+recipeController.delete("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        await recipeService.deleteRecipe(id);
+
+        res.status(200).json({ message: "Book deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+
 });
 
 export default recipeController;
