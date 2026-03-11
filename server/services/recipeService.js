@@ -12,5 +12,8 @@ export default {
             ...recipeData,
             ownerId: ownerId
         });
+    },
+    updateRecipe(id, recipeData) {
+        Recipe.findByIdAndUpdate(id, recipeData, { runValidators: true });
     }
 }

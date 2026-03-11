@@ -56,4 +56,17 @@ recipeController.post("/", async (req, res) => {
     }
 });
 
+recipeController.put("/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const recipeData = req.body;
+
+        const updatedRecipe = await recipeService.updateRecipe(id, recipeData);
+
+        res.status(200).json(updatedRecipe);
+    } catch(err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 export default recipeController;
