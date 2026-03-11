@@ -10,7 +10,7 @@ export default {
     createRecipe(recipeData, ownerId) {
         return Recipe.create({
             ...recipeData,
-            ownerId: ownerId
+            _ownerId: ownerId
         });
     },
     updateRecipe(id, recipeData) {
