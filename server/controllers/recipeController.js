@@ -59,7 +59,18 @@ recipeController.post("/", async (req, res) => {
 recipeController.put("/:id", async (req, res) => {
     try {
         const id = req.params.id;
+        const userId = req.user.id;
         const recipeData = req.body;
+
+        const recipe = await recipeService.getOne(id);
+
+        if (!recipe) {
+            return res.status(404).json({ message: "Recipe not found" });
+        }
+
+        if (recipe.ownerId.toString() !== userId.toString()) {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
 
         const updatedRecipe = await recipeService.updateRecipe(id, recipeData);
 
@@ -72,10 +83,21 @@ recipeController.put("/:id", async (req, res) => {
 recipeController.delete("/:id", async (req, res) => {
     try {
         const id = req.params.id;
+        const userId = req.user.id;
+
+        const recipe = await recipeService.getOne(id);
+
+        if (!recipe) {
+            return res.status(404).json({ message: "Recipe not found" });
+        }
+
+        if (recipe.ownerId.toString() !== userId.toString()) {
+            return res.status(403).json({ message: "Unauthorized access" });
+        }
 
         await recipeService.deleteRecipe(id);
 
-        res.status(200).json({ message: "Book deleted successfully" });
+        res.status(200).json({ message: "Recipe deleted successfully" });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
