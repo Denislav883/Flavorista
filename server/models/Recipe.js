@@ -21,7 +21,7 @@ const recipeSchema = new Schema({
         type: String,
         required: true
     },
-    ownerId: {
+    _ownerId: {
         type: Types.ObjectId,
         ref: "User"
     }
