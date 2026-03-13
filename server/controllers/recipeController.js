@@ -68,7 +68,7 @@ recipeController.put("/:id", async (req, res) => {
             return res.status(404).json({ message: "Recipe not found" });
         }
 
-        if (recipe.ownerId.toString() !== userId.toString()) {
+        if (recipe._ownerId.toString() !== userId.toString()) {
             return res.status(403).json({ message: "Unauthorized access" });
         }
 
@@ -91,7 +91,7 @@ recipeController.delete("/:id", async (req, res) => {
             return res.status(404).json({ message: "Recipe not found" });
         }
 
-        if (recipe.ownerId.toString() !== userId.toString()) {
+        if (recipe._ownerId.toString() !== userId.toString()) {
             return res.status(403).json({ message: "Unauthorized access" });
         }
 
