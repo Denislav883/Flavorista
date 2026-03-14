@@ -1,4 +1,5 @@
 import { Router } from "express";
+import querystring from "querystring";
 
 import recipeService from "../services/recipeService.js";
 
@@ -6,7 +7,14 @@ const recipeController = Router();
 
 recipeController.get("/", async (req, res) => {
     try {
-        const recipes = await recipeService.getAll();
+        const query = req.query.where?.replaceAll('"', '');
+        let filter = {};
+
+        if(query) {
+            filter = querystring.parse(query);
+        }
+
+        const recipes = await recipeService.getAll(filter);
 
         res.status(200).json(recipes || []);
     } catch (err) {

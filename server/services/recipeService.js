@@ -1,8 +1,8 @@
 import Recipe from "../models/Recipe.js";
 
 export default {
-    getAll() {
-        return Recipe.find();
+    getAll(filter) {
+        return Recipe.find(filter);
     },
     getOne(id) {
         return Recipe.findById(id);
