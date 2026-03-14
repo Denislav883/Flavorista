@@ -14,7 +14,7 @@ export default {
         });
     },
     updateRecipe(id, recipeData) {
-        return Recipe.findByIdAndUpdate(id, recipeData, { runValidators: true });
+        return Recipe.findByIdAndUpdate(id, recipeData, { runValidators: true, returnDocument: "after" });
     },
     deleteRecipe(id) {
         return Recipe.findByIdAndDelete(id);
